@@ -11,26 +11,28 @@ _make_completions() {
 	case ${COMP_CWORD} in
 		# List of subcommands
 		1)
-			COMPREPLY=($(compgen -W "init make-config import export" -- ${cur}))
+			COMPREPLY=($(compgen -W "help init make-config import export" -- ${cur}))
 			;;
 		2)
 			# Auto complete for the individual subcommands
 			case ${prev} in
-				import)
-					COMPREPLY=($(compgen -A directory -- ${cur}))
+				help)
+					COMPREPLY=($(compgen -W "init make-config import export" -- ${cur}))
 					;;
-				export)
-					COMPREPLY=($(compgen -A directory -- ${cur}))
-					;;
-				init)
-					COMPREPLY=($(compgen -W "password" -- ${cur}))
+				import|export)
+					# Enable the default readline completion
+					compopt -o default
+					COMPREPLY=()
 					;;
 			esac
 			;;
 		*)
+			# We want no completion for the other commands
 			COMPREPLY=()
 			;;
 	esac
 }
 
 complete -F _make_completions script_name
+complete -F _make_completions script_name.sh
+complete -F _make_completions ./script_name
