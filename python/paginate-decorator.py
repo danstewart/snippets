@@ -29,4 +29,8 @@ def paginate(key='page', step=1, default=1):
 				yield results
 		return wrapper
 
+	# Handle calling without parens
+	if callable(key):
+		return it(key)
 	return it
+
